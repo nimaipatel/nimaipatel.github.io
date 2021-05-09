@@ -15,6 +15,10 @@ serve: site
 	    echo Cannot find Python http.server or SimpleHTTPServer; \
 	fi
 
+live: site
+	find content/ layout/ static/ | entr sh -c 'make site' &
+	livereload _site &
+
 venv2:
 	virtualenv ~/.venv/makesite
 	echo . ~/.venv/makesite/bin/activate > venv
