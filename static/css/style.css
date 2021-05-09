@@ -3,12 +3,35 @@
 @import url('http://fonts.cdnfonts.com/css/liberation-sans');
 @import url('http://fonts.cdnfonts.com/css/liberation-mono');
 
+:root {
+    --background: #1d2021;
+    --foreground: #ebdbb2;
+    --d_color0:  #282828;
+    --d_color1:  #cc241d;
+    --d_color2:  #98971a;
+    --d_color3:  #d79921;
+    --d_color4:  #458588;
+    --d_color5:  #b16286;
+    --d_color6:  #689d6a;
+    --d_color7:  #a89984;
+    --d_color8:  #928374;
+    --d_color9:  #fb4934;
+    --d_color10: #b8bb26;
+    --d_color11: #fabd2f;
+    --d_color12: #83a598;
+    --d_color13: #d3869b;
+    --d_color14: #8ec07c;
+    --d_color15: #ebdbb2;
+}
+
 /* General */
 body {
     margin: 0;
     line-height: 1.5em;
-    color: #333333;
     font-family: 'Liberation Sans', sans-serif;
+    color:var(--foreground);
+    background-color:var(--background);
+
 }
 
 code {
@@ -27,12 +50,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a:link, a:visited {
-    color: #0000e0;
+    color: var(--d_color4);
     text-decoration: none
 }
 
 a:hover, a:active {
-    color: #0000ff;
+    color: var(--d_color12);
     text-decoration: underline
 }
 
@@ -48,8 +71,8 @@ nav section, header section, main, footer section {
 
 /* Navigation panel */
 nav {
-    background: #333333;
-    border-bottom: thin solid #111111;
+    background: var(--d_color6);
+    border-bottom: thin solid var(--background);
     line-height: 3em;
 }
 
@@ -58,11 +81,11 @@ nav a {
 }
 
 nav a:link, nav a:visited {
-    color: #cccccc;
+    color:var(--foreground);
 }
 
 nav a:hover, nav a:active {
-    color: #ffffff;
+    color:var(--foreground);
     text-decoration: none;
 }
 
@@ -75,11 +98,11 @@ nav a:hover, nav a:active {
 
 /* Footer */
 footer {
-    background: #f0f0f0;
-    border-top: thin solid #e0e0e0;
+    background: var(--background);
+    border-top: thin solid var(--foreground);
     margin-top: 2em;
     padding: 1em 0;
-    box-shadow: 0 100vh 0 100vh #f0f0f0;
+    box-shadow: 0 100vh 0 100vh var(--background);
     text-align: center;
 }
 
@@ -105,19 +128,19 @@ article {
 article h2 a:link, article h2 a:visited,
 article h1 a:link, article h1 a:visited,
 .more:link, .more:visited {
-    color: #333333;
+    color: var(--d_color3);
 }
 
 article h2 a:hover, article h2 a:active,
 article h1 a:hover, article h1 a:active,
 .more:hover, .more:active {
-    color: #777777;
+    color: var(--d_color11);
 }
 
 p.meta {
     margin-top: 0;
     font-size: 0.8em;
-    color: #777777;
+    color: var(--d_color5);
     font-style: italic;
 }
 
