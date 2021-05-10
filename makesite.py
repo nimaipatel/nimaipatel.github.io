@@ -177,7 +177,7 @@ def main():
         'base_path': '',
         'subtitle': 'Lorem Ipsum',
         'author': 'Admin',
-        'site_url': 'http://localhost:8000',
+        'site_url': 'https://nimaipatel.netlify.app',
         'current_year': datetime.datetime.now().year
     }
 
