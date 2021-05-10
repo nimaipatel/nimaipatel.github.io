@@ -175,7 +175,7 @@ def main():
     # Default parameters.
     params = {
         'base_path': '',
-        'subtitle': 'Lorem Ipsum',
+        'subtitle': 'Nimai',
         'author': 'Admin',
         'site_url': 'https://nimaipatel.netlify.app',
         'current_year': datetime.datetime.now().year
