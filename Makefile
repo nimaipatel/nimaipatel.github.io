@@ -16,7 +16,7 @@ serve: site
 	fi
 
 live: site
-	find content/ layout/ static/ | entr sh -c 'make site'&	livereload _site
+	find content/ layout/ static/ | entr sh -c 'make clean site'&	livereload _site
 
 venv2:
 	virtualenv ~/.venv/makesite
