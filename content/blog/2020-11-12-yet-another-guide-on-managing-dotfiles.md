@@ -8,8 +8,8 @@ dotfiles in the \*NIX home directory. I messed around with it for a while
 and finally ended up with a no-nonsense system for managing system dotfiles.
 
 A bare git repository is almost like a regular git project that you might create
-with `git init`. The only difference.
-is that it doesn't have a specific working tree but _only_ the actual git repo
+with `git init`. The only difference is that it doesn't have a specific
+working tree but _only_ the actual git repo
 (i.e. the .git folder).
 
 # Step One: Initializing the git repository
