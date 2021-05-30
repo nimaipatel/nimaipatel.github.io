@@ -25,8 +25,8 @@ just use a ternary operator in the assignment for `sound`
 const sound = animal === 'dog' ? 'barks' : 'meows'
 ```
 
-Well, this kinda works. The problem is that sound is assigned `'meows'` as long
-`animal` isn't `'dog'`. So even if `animal` was pig, `sound` would be assigned
+Well, this kinda works. The problem is that `sound` is assigned `'meows'` as long
+`animal` isn't `'dog'`. So even if `animal` was `'pig'`, `sound` would be assigned
 `'meows'`! Also, what do we do if we have more than two types of animals? We
 could start nesting ternary operators, but that would get ugly quickly!
 
@@ -35,7 +35,6 @@ problem.
 
 ```
 /* variables are immutable by default in Rust */
-let animal = "dog"
 let sound = {
     if animal == "dog" {
         "barks"
