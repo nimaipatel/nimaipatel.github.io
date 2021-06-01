@@ -58,11 +58,11 @@ them on assignment.
 
 ```
 const sound = (() => {
-    if (animal == "dog") {
+    if (animal === "dog") {
         return "barks"
-    } else if (animal == "cat") {
+    } else if (animal === "cat") {
         return "meows"
-    } else if (animal == "pig") {
+    } else if (animal === "pig") {
         return "oinks"
     }
 })()
