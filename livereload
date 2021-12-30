@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+from livereload import Server, shell
+server = Server()
+server.watch('content/blog/*.md', shell('make site'))
+server.serve(root='_site')
