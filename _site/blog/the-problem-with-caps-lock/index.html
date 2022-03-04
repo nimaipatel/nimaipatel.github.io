@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Problem with Caps Lock - Nimai</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body id="the-problem-with-caps-lock">
+
+<nav>
+<section>
+    <span class="home">
+        <a href="/">Home 🏠</a>
+    </span>
+    <span class="links">
+        <a href="/blog/">Blog 📜</a>
+        <a href="/contact/">Contact 📧</a>
+    </span>
+</section>
+</nav>
+
+<main>
+<article>
+<h1><a href="/blog/the-problem-with-caps-lock/">The Problem with Caps Lock</a></h1>
+<p class="meta">Published on 2021-12-29 by <b>Nimai Patel</b></p>
+<p>The <code>Caps Lock</code> key is probably the most useless key on modern computer
+keyboards. However, it is placed in one of the most convenient positions in the
+home row. Not mapping it to anything else is just wasting its potential. What I
+like to do is map <code>Caps Lock</code> by itself to the <code>Esc</code> key and <code>Caps Lock</code> +
+<code>&lt;key&gt;</code> to <code>Ctrl</code> + <code>&lt;key&gt;</code>.</p>
+<p>I then map <code>shift</code> + <code>Caps Lock</code> to <code>Caps Lock</code> for the rare occasions on which
+I do need to use it.</p>
+<p>I achieve this using a script which depends on <code>xcape</code> and <code>xmodmap</code> (assuming
+you're using a US keyboard layout):</p>
+<pre><code>#!/bin/sh
+setxkbmap -layout us
+killall xcape 1&gt;/dev/null 2&gt;&amp;1
+xmodmap -e 'clear lock'
+xmodmap -e 'clear control'
+xmodmap -e 'add control = Caps_Lock Control_L Control_R'
+xmodmap -e 'keycode 66 = Control_L Caps_Lock NoSymbol NoSymbol'
+xcape   -e 'Control_L=Escape'
+</code></pre>
+<p>This way I can achieve:</p>
+<pre><code>CapsLock =&gt; Esc
+CapsLock + &lt;Key&gt; =&gt; Ctrl + &lt;Key&gt;
+Shift + CapsLock =&gt; CapsLock
+</code></pre>
+<h1>But... Why?</h1>
+<p>Well, <code>Esc</code> and <code>Ctrl</code> keys are two of the most utilizable keys. Ironically,
+they are placed in the worst possible place on a keyboard. <code>Esc</code> is used for
+switching from insert mode to normal mode in vim and <code>Ctrl</code> is the most commonly
+used modifier in most programs.</p>
+<p>I have been using this setup for months now, and I'm sure my wrists would thank
+me for it if they could.</p>
+
+</article>
+
+</main>
+
+<footer>
+<section>
+<p>&copy; 2022 Nimai Patel</p>
+<p>
+    <a href="https://twitter.com/nimaipatel_">Twitter 🐦</a>
+    <a href="https://github.com/nimaipatel">GitHub 🖥️</a>
+</p>
+</section>
+</footer>
+
+</body>
+</html>

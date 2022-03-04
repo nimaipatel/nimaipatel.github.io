@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compiling a Custom Iosevka Font on Arch Linux - Nimai</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body id="compiling-custom-iosevka">
+
+<nav>
+<section>
+    <span class="home">
+        <a href="/">Home 🏠</a>
+    </span>
+    <span class="links">
+        <a href="/blog/">Blog 📜</a>
+        <a href="/contact/">Contact 📧</a>
+    </span>
+</section>
+</nav>
+
+<main>
+<article>
+<h1><a href="/blog/compiling-custom-iosevka/">Compiling a Custom Iosevka Font on Arch Linux</a></h1>
+<p class="meta">Published on 2021-10-17 by <b>Nimai Patel</b></p>
+<p>I personally am somewhat of a font</p>
+<h1>Step One: Initializing the git repository</h1>
+<p>This is as simple as running the commands:</p>
+<pre><code>$ mkdir &quot;${XDG_CONFIG_HOME}/cfg&quot;
+$ git init --bare &quot;${XDG_CONFIG_HOME}/cfg/.git/&quot;
+</code></pre>
+<p>If you've used git for any period of time then you know that the <code>git init</code>
+command initializes an empty repository in the folder that you're currently in.
+Since we want to create a bare repository, we pass the <code>--bare</code> flag and the
+location of the git folder. This should create a <code>.git</code> folder in
+<code>~/.config/cfg</code>. If you inspects its contents you'll find that they are similar
+to any other repository's <code>.git</code> folder.</p>
+<h1>Step Two: Accessing the repository via an alias/function</h1>
+<p>Add the following line to your .zshrc or .bashrc along with the rest of your
+aliases:</p>
+<pre><code>cfg() { git --git-dir=&quot;${XDG_CONFIG_HOME}/cfg/.git/&quot; --work-tree=&quot;$HOME&quot; &quot;$@&quot; ; }
+</code></pre>
+<p>This function will allow us to stage and commit files to our backup repository.
+The <code>--git-dir</code> flag specifies the git repository we made in step one and
+<code>--work-tree</code> will allow us to track any file in our <code>$HOME</code> directory
+using the repo.</p>
+<h1>Step Three: Ignoring files we don't want to backup</h1>
+<p>Run <code>exec $SHELl</code> or restart your terminal to make the alias we made in the
+previous step available. Then, run the following command, so that the
+repository doesn't display the hundreds of files in your home directory every
+time you check it's <code>status</code>:</p>
+<pre><code>$ cfg config --local status.showUntrackedFiles no
+</code></pre>
+<h1>Step Four: Setup a remote repository</h1>
+<p>Create an empty remote repository (I will be using GitHub) and get its SSH or
+HTTP. On GitHub this is immediately available after the repo is created.
+Finally add the remote with:</p>
+<pre><code>$ cfg remote add origin &lt;URL&gt;
+</code></pre>
+<p>At this point you can simply do something like:</p>
+<pre><code>$ cfg add ~/.vimrc
+$ cfg commit -m &quot;Adding .vimrc&quot;
+$ cfg push origin master
+</code></pre>
+<p>This will make the repository start tracking your .vimrc and you can commit
+and push the file to GitHub. Pretty much all git commands like <code>status</code> and
+<code>diff</code> should now be available to you with the <code>cfg</code> function.</p>
+<h1>Getting your dotfiles on a new system:</h1>
+<p>Now all you have to do on a new system is run the following commands
+and you'll have all your settings back:</p>
+<pre><code>git init --bare &quot;${XDG_CONFIG_HOME}/cfg/.git/&quot;
+cfg() { git --git-dir=&quot;${XDG_CONFIG_HOME}/cfg/.git/&quot; --work-tree=&quot;$HOME&quot; &quot;$@&quot; ; }
+cfg config --local status.showUntrackedFiles no
+cfg remote add origin https://github.com/nimaipatel/dotfiles.git
+cfg pull origin master
+</code></pre>
+<p>You might get some errors if you already have, say, a .zshrc in your new
+system. In this case you probably would want to delete this before pulling
+your files from the remote.</p>
+<p>That's it we're done 🥳. Please do tell me if you face any issues with the
+script, in case you use it!</p>
+
+</article>
+
+</main>
+
+<footer>
+<section>
+<p>&copy; 2022 Nimai Patel</p>
+<p>
+    <a href="https://twitter.com/nimaipatel_">Twitter 🐦</a>
+    <a href="https://github.com/nimaipatel">GitHub 🖥️</a>
+</p>
+</section>
+</footer>
+
+</body>
+</html>

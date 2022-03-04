@@ -10,5 +10,5 @@ livereload = "*"
 [dev-packages]
 livereload = "*"
 
-[requires]
+[required]
 python_version = "3.7"
