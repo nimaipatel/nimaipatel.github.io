@@ -25,59 +25,74 @@
 <article>
 <h1><a href="/blog/rust-style-block-expressions-in-other-languages/">Rust Style Expressions in Other Programming Languages</a></h1>
 <p class="meta">Published on 2021-05-29 by <b>Nimai Patel</b></p>
-<p>Lets say we have a variable <code>animal</code> and we want to initiate the value of a
-variable <code>sound</code> based on the value of <code>animal</code>. In JavaScript, we could do
-something like this:</p>
-<pre><code>let sound;
+Lets say we have a variable `animal` and we want to initiate the value of a
+variable `sound` based on the value of `animal`. In JavaScript, we could do
+something like this:
+
+```
+let sound;
 if (animal === 'dog') {
     sound = 'barks';
 } else if (animal === 'cat') {
     sound = 'meows';
 }
-</code></pre>
-<p>While this solution works as expected, if you're obsessed with functional
-programming like I am, the use of <code>let</code> in a codebase that otherwise adheres to
-FP concepts as much as possible might bother you.</p>
-<p>The immutable solution in this case is actually pretty simple though. We can
-just use a ternary operator in the assignment for <code>sound</code></p>
-<pre><code>const sound = animal === 'dog' ? 'barks' : 'meows'
-</code></pre>
-<p>Well, this kinda works. The problem is that <code>sound</code> is assigned <code>'meows'</code> as long
-<code>animal</code> isn't <code>'dog'</code>. So even if <code>animal</code> was <code>'pig'</code>, <code>sound</code> would be assigned
-<code>'meows'</code>! Also, what do we do if we have more than two types of animals? We
-could start nesting ternary operators, but that would get ugly quickly!</p>
-<p>Now the Rust programming language has a syntactically clean solution to this
-problem.</p>
-<pre><code>/* variables are immutable by default in Rust */
+```
+
+While this solution works as expected, if you're obsessed with functional
+programming like I am, the use of `let` in a codebase that otherwise adheres to
+FP concepts as much as possible might bother you.
+
+The immutable solution in this case is actually pretty simple though. We can
+just use a ternary operator in the assignment for `sound`
+
+```
+const sound = animal === 'dog' ? 'barks' : 'meows'
+```
+
+Well, this kinda works. The problem is that `sound` is assigned `'meows'` as long
+`animal` isn't `'dog'`. So even if `animal` was `'pig'`, `sound` would be assigned
+`'meows'`! Also, what do we do if we have more than two types of animals? We
+could start nesting ternary operators, but that would get ugly quickly!
+
+Now the Rust programming language has a syntactically clean solution to this
+problem.
+
+```
+/* variables are immutable by default in Rust */
 let sound = {
-    if animal == &quot;dog&quot; {
-        &quot;barks&quot;
-    } else if animal == &quot;cat&quot; {
-        &quot;meows&quot;
-    } else if animal == &quot;pig&quot; {
-        &quot;oinks&quot;
+    if animal == "dog" {
+        "barks"
+    } else if animal == "cat" {
+        "meows"
+    } else if animal == "pig" {
+        "oinks"
     } else {
-        &quot;not valid animal&quot;
+        "not valid animal"
     }
 }
-</code></pre>
-<p>Expressions inside braces in Rust can evaluate to values. This means you can
+```
+
+Expressions inside braces in Rust can evaluate to values. This means you can
 use control flow key words like if-else statements and loops during the
-assignment of variables.</p>
-<p>Now how do we go about doing something similar in other programming languages
+assignment of variables.
+
+Now how do we go about doing something similar in other programming languages
 like JavaScript? Well, we can use anonymous functions and immediately call
-them on assignment.</p>
-<pre><code>const sound = (() =&gt; {
-    if (animal === &quot;dog&quot;) {
-        return &quot;barks&quot;
-    } else if (animal === &quot;cat&quot;) {
-        return &quot;meows&quot;
-    } else if (animal === &quot;pig&quot;) {
-        return &quot;oinks&quot;
+them on assignment.
+
+```
+const sound = (() => {
+    if (animal === "dog") {
+        return "barks"
+    } else if (animal === "cat") {
+        return "meows"
+    } else if (animal === "pig") {
+        return "oinks"
     }
 })()
-</code></pre>
-<p>Great! And it doesn't look that bad either, no?</p>
+```
+
+Great! And it doesn't look that bad either, no?
 
 </article>
 
