@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+
+<channel>
+<title>Nimai's Tech Blog</title>
+<link>https://nimaipatel.netlify.app/</link>
+<description>Grow with Technology</description>
+
+<item>
+<title>The Problem with Caps Lock</title>
+<link>https://nimaipatel.netlify.app/blog/the-problem-with-caps-lock/</link>
+<description>
+<![CDATA[
+<p>
+The `Caps Lock` key is probably the most useless key on modern computer
+keyboards. However, it is placed in one of the most convenient positions in the
+home row. Not mapping it to anything else is just wasting its potential. What I
+like to do is map `Caps Lock` by itself to the `Esc` key and `Caps Lock` +
+`<key>` to `Ctrl` + `<key>`.
+
+I then map `shift` + `Caps Lock` to `Caps Lock` for the rare occasions on which
+I do need to use it.
+
+I achieve this using a script which depends on `xcape` and `xmodmap` (assuming
+you're using a US keyboard layout):
+
+```
+#!/bin/sh
+setxkbmap -layout us
+killall xcape 1>/dev/null 2>&1
+xmodmap -e 'clear lock'
+xmodmap -e 'clear control'
+xmodmap -e 'add control = Caps_Lock Control_L Control_R'
+xmodmap -e 'keycode 66 = Control_L Caps_Lock NoSymbol NoSymbol'
+xcape   -e 'Control_L=Escape'
+```
+
+This way I can achieve:
+```
+CapsLock => Esc
+CapsLock + <Key> => Ctrl + <Key>
+Shift + CapsLock => CapsLock
+```
+
+# But... Why?
+
+Well, `Esc` and `Ctrl` keys are two of the most utilizable keys. Ironically,
+they are placed in the worst possible place on a keyboard. `Esc` is used for
+switching from insert mode to normal mode in vim and `Ctrl` is the most commonly
+used modifier in most programs. 
+
+I have been using this setup for months now, and I'm sure my wrists would thank
+me for it if they could.
+&nbsp;
+</p>
+]]>
+</description>
+<pubDate>Wed, 29 Dec 2021 00:00:00 +0000</pubDate>
+</item>
+<item>
+<title>Rust Style Expressions in Other Programming Languages</title>
+<link>https://nimaipatel.netlify.app/blog/rust-style-block-expressions-in-other-languages/</link>
+<description>
+<![CDATA[
+<p>
+Lets say we have a variable `animal` and we want to initiate the value of a
+variable `sound` based on the value of `animal`. In JavaScript, we could do
+something like this:
+
+```
+let sound;
+if (animal === 'dog') {
+    sound = 'barks';
+} else if (animal === 'cat') {
+    sound = 'meows';
+}
+```
+
+While this solution works as expected, if you're obsessed with functional
+programming like I am, the use of `let` in a codebase that otherwise adheres to
+FP concepts as much as possible might bother you.
+
+The immutable solution in this case is actually pretty simple though. We can
+just use a ternary operator in the assignment for `sound`
+
+```
+const sound = animal === 'dog' ? 'barks' : 'meows'
+```
+
+Well, this kinda works. The problem is that `sound` is assigned `'meows'` as long
+`animal` isn't `'dog'`. So even if `animal` was `'pig'`, `sound` would be assigned
+`'meows'`! Also, what do we do if we have more than two types of animals? We
+could start nesting ternary operators, but that would get ugly quickly!
+
+Now the Rust programming language has a syntactically clean solution to this
+problem.
+
+```
+/* variables are immutable by default in Rust */
+let sound = {
+    if animal == "dog" {
+        "barks"
+    } else if animal == "cat" {
+        "meows"
+    } else if animal == "pig" {
+        "oinks"
+    } else {
+        "not valid animal"
+    }
+}
+```
+
+Expressions inside braces in Rust can evaluate to values. This means you can
+use control flow key words like if-else statements and loops during the
+assignment of variables.
+
+Now how do we go about doing something similar in other programming languages
+like JavaScript? Well, we can use anonymous functions and immediately call
+them on assignment.
+
+```
+const sound = (() => {
+    if (animal === "dog") {
+        return "barks"
+    } else if (animal === "cat") {
+        return "meows"
+    } else if (animal === "pig") {
+        return "oinks"
+    }
+})()
+```
+
+Great! And it doesn't look that bad either, no?
+&nbsp;
+</p>
+]]>
+</description>
+<pubDate>Sat, 29 May 2021 00:00:00 +0000</pubDate>
+</item>
+<item>
+<title>Yet Another Guide on Managing Dotfiles</title>
+<link>https://nimaipatel.netlify.app/blog/yet-another-guide-on-managing-dotfiles/</link>
+<description>
+<![CDATA[
+<p>
+A few months ago I came across this
+[ article ](https://www.atlassian.com/git/tutorials/dotfiles)
+which explained how a bare git repository can be used to backup
+dotfiles in the \*NIX home directory. I messed around with it for a while
+and finally ended up with a no-nonsense system for managing system dotfiles.
+
+A bare git repository is almost like a regular git project that you might create
+with `git init`. The only difference is that it doesn't have a specific
+working tree but _only_ the actual git repo
+(i.e. the .git folder).
+
+# Step One: Initializing the git repository
+
+This is as simple as running the commands:
+
+```
+$ mkdir "${XDG_CONFIG_HOME}/cfg"
+$ git init --bare "${XDG_CONFIG_HOME}/cfg/.git/"
+```
+
+If you've used git for any period of time then you know that the `git init`
+command initializes an empty repository in the folder that you're currently in.
+Since we want to create a bare repository, we pass the `--bare` flag and the
+location of the git folder. This should create a `.git` folder in
+`~/.config/cfg`. If you inspects its contents you'll find that they are similar
+to any other repository's `.git` folder.
+
+# Step Two: Accessing the repository via an alias/function
+
+Add the following line to your .zshrc or .bashrc along with the rest of your
+aliases:
+
+```
+cfg() { git --git-dir="${XDG_CONFIG_HOME}/cfg/.git/" --work-tree="$HOME" "$@" ; }
+```
+
+This function will allow us to stage and commit files to our backup repository.
+The `--git-dir` flag specifies the git repository we made in step one and
+`--work-tree` will allow us to track any file in our `$HOME` directory
+using the repo.
+
+# Step Three: Ignoring files we don't want to backup
+
+Run `exec $SHELl` or restart your terminal to make the alias we made in the
+previous step available. Then, run the following command, so that the
+repository doesn't display the hundreds of files in your home directory every
+time you check it's `status`:
+
+```
+$ cfg config --local status.showUntrackedFiles no
+```
+
+# Step Four: Setup a remote repository
+
+Create an empty remote repository (I will be using GitHub) and get its SSH or
+HTTP. On GitHub this is immediately available after the repo is created.
+Finally add the remote with:
+
+```
+$ cfg remote add origin <URL>
+```
+
+At this point you can simply do something like:
+
+```
+$ cfg add ~/.vimrc
+$ cfg commit -m "Adding .vimrc"
+$ cfg push origin master
+```
+
+This will make the repository start tracking your .vimrc and you can commit
+and push the file to GitHub. Pretty much all git commands like `status` and
+`diff` should now be available to you with the `cfg` function.
+
+# Getting your dotfiles on a new system:
+
+Now all you have to do on a new system is run the following commands
+and you'll have all your settings back:
+
+```
+git init --bare "${XDG_CONFIG_HOME}/cfg/.git/"
+cfg() { git --git-dir="${XDG_CONFIG_HOME}/cfg/.git/" --work-tree="$HOME" "$@" ; }
+cfg config --local status.showUntrackedFiles no
+cfg remote add origin https://github.com/nimaipatel/dotfiles.git
+cfg pull origin master
+```
+
+You might get some errors if you already have, say, a .zshrc in your new
+system. In this case you probably would want to delete this before pulling
+your files from the remote.
+
+That's it we're done 🥳. Please do tell me if you face any issues with the
+script, in case you use it!
+&nbsp;
+</p>
+]]>
+</description>
+<pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate>
+</item>
+
+
+</channel>
+</rss>
